@@ -1,6 +1,9 @@
+
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webppack-plugin')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 module.exports = {
     // 指定打包模式
     mode: 'development',
@@ -18,11 +21,52 @@ module.exports = {
         // 资源应用的路劲
         publicPath: './'
     },
+    resolve: {
+    	alias: {
+    		//通过vue结尾来代替‘vue/dist/vue.runtime.esm.js’路径 
+    		vue$: 'vue/dist/vue.runtime.esm.js' 
+    	}
+    },
     module: {
         rules: [
             {
+            	test: /\.vue$/,
+            	use: [
+            		{
+            			// 缓存loader编译的结果
+            			loader: 'cache-loader',
+            		},
+            		{
+            			// 缓存loader编译的结果
+            			loader: 'thread-loader',
+            		},
+            		{
+            			// 使用 worker 池来运行loader，每个 worker 都是一个 node.js 进程
+            			loader: 'vue-loader',
+            			options: {
+            				complierOptions: {
+            					preserveWhitespace: false
+            				}
+            			}
+            		}
+
+            	]
+            },
+            {
                 test: /\.jsx?$/,
-                loader: 'babel-loader'
+    			exclude: /(node_modules)/,
+                use: [
+                	{
+		            	loader: 'cache-loader'
+		          	},
+		          	// {
+		           //  	loader: 'thread-loader'
+		          	// },
+		          	{
+		            	loader: 'babel-loader',
+		          	}
+		        ]
+
             },
             {
                 test: /\.(scss|sass)$/,
@@ -54,16 +98,17 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        port: 3000,
+        port: 3033,
         contentBase: './dist'
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './public/index.html')
+            template: path.resolve(__dirname, '../public/index.html')
         }),
         // 热更新插件
         new webpack.HotModuleReplacementPlugin(),
         // 更新组件时在控制台输出组件的路径而不是数字ID，用在开发模式
-        new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin(),
+        new VueLoaderPlugin()
     ]
 }

@@ -1,6 +1,6 @@
 module.exports = {
     presets: [
-        ["@babel/preset-nav", {
+        ["@babel/preset-env", {
             "useBuiltIns": "usage"
         }]
     ]
