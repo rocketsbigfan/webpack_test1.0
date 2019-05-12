@@ -9,7 +9,7 @@ module.exports = {
     mode: 'development',
     entry: {
         // 配置入口文件
-        main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')]
+        main: path.resolve(__dirname, '../src/main.js')    
     },
     output: {
         // 配置打包文件输出地址
@@ -19,13 +19,15 @@ module.exports = {
         // 生成的chunk名
         chunkFilename: 'js/[name].[hash:8].js',
         // 资源应用的路劲
-        publicPath: './'
+        publicPath: '/'
     },
     resolve: {
     	alias: {
     		//通过vue结尾来代替‘vue/dist/vue.runtime.esm.js’路径 
     		vue$: 'vue/dist/vue.runtime.esm.js' 
-    	}
+    	},
+    	//导入语句没带后缀时webpack自动加上后缀去尝试访问文件
+    	extensions: ['.js', '.vue']
     },
     module: {
         rules: [
@@ -36,10 +38,10 @@ module.exports = {
             			// 缓存loader编译的结果
             			loader: 'cache-loader',
             		},
-            		{
+            		// {
             			// 缓存loader编译的结果
-            			loader: 'thread-loader',
-            		},
+            			// loader: 'thread-loader',
+            		// },
             		{
             			// 使用 worker 池来运行loader，每个 worker 都是一个 node.js 进程
             			loader: 'vue-loader',
@@ -56,9 +58,9 @@ module.exports = {
                 test: /\.jsx?$/,
     			exclude: /(node_modules)/,
                 use: [
-                	{
-		            	loader: 'cache-loader'
-		          	},
+             //    	{
+		           //  	loader: 'cache-loader'
+		          	// },
 		          	// {
 		           //  	loader: 'thread-loader'
 		          	// },
@@ -69,36 +71,61 @@ module.exports = {
 
             },
             {
-                test: /\.(scss|sass)$/,
-                use: [
-                    // 将css插入html中
-                    {
-                        loader: 'style-loader'
-                    },
-                    // 解析引入的css文件
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 2
-                        }
-                    },
-                    // 将scss/sass语法转化为css
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            implementation: require('dart-sass')
-                        } 
-                    },
-                    {
-                        loader: 'postcss-loader'
-                    }
-                ]
-            }
+		        test: /\.(jpe?g|png|gif)$/,
+		        use: [
+					{
+						loader: 'url-loader',
+						options: {
+						  limit: 4096,
+						  fallback: {
+						    loader: 'file-loader',
+						    options: {
+						      name: 'img/[name].[hash:8].[ext]'
+						    }
+						  }
+						}
+					}
+				]
+				},
+			{
+				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+				use: [
+				  {
+				    loader: 'url-loader',
+				    options: {
+				      limit: 4096,
+				      fallback: {
+				        loader: 'file-loader',
+				        options: {
+				          name: 'media/[name].[hash:8].[ext]'
+				        }
+				      }
+				    }
+				  }
+				]
+			},
+			{
+				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+				use: [
+				  {
+				    loader: 'url-loader',
+				    options: {
+				      limit: 4096,
+				      fallback: {
+				        loader: 'file-loader',
+				        options: {
+				          name: 'fonts/[name].[hash:8].[ext]'
+				        }
+				      }
+				    }
+				  }
+				]
+			},
         ]
     },
     devServer: {
         hot: true,
-        port: 3033,
+        port: 3035,
         contentBase: './dist'
     },
     plugins: [
@@ -109,6 +136,12 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         // 更新组件时在控制台输出组件的路径而不是数字ID，用在开发模式
         new webpack.NamedModulesPlugin(),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        // 定义环境变量
+        new webpack.DefinePlugin({
+        	'process.env': {
+        		NODE_ENV: JSON.stringify('development')
+        	}
+        })
     ]
 }

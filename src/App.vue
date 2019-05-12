@@ -16,6 +16,7 @@ export default {
 
 <style scoped lang="scss">
 .App {
-  background: #aaaaaa;
+	display: flex;
+  	background: #aaaaaa;
 }
 </style>
