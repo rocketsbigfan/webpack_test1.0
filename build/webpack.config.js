@@ -125,7 +125,7 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        port: 3035,
+        port: 3037,
         contentBase: './dist'
     },
     plugins: [

@@ -1,22 +1,23 @@
 <template>
   <div class="App">
-    Hello World
+    Hello World! test test
   </div>
 </template>
 
 <script>
-export default {
+export default {  
   name: 'App',
 
   data() {
     return {};
   }
 };
-</script>
+</script>  
 
 <style scoped lang="scss">
 .App {
 	display: flex;
+	// align-content: center;
   	background: #aaaaaa;
 }
 </style>

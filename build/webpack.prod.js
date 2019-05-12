@@ -50,13 +50,13 @@ module.exports = merge(webpackConfig, {
 						}
 					},
 					{
+						loader: 'postcss-loader'
+					},
+					{
 						loader: 'sass-loader',
 						options: {
 							implementation: require('dart-sass')
 						}
-					},
-					{
-						loader: 'postcss-loader'
 					}
 				]
 			}
