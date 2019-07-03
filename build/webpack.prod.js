@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin') //清空上次打包�
 const CopyWebpackPlugin = require('copy-webpack-plugin') //用户拷贝静态资源
 const MiniCssExtractPLugin = require('mini-css-extract-plugin') //提取css到文件
 const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin'); //压缩css文件
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 module.exports = merge(webpackConfig, {
@@ -92,7 +93,8 @@ module.exports = merge(webpackConfig, {
 	        to: path.resolve(__dirname, '../dist')
 	      }
 	    ]),
-		new CleanWebpackPlugin()
+		new CleanWebpackPlugin(),
 
+		new BundleAnalyzerPlugin()
 	]
 })

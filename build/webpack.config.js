@@ -58,9 +58,9 @@ module.exports = {
                 test: /\.jsx?$/,
     			exclude: /(node_modules)/,
                 use: [
-             //    	{
-		           //  	loader: 'cache-loader'
-		          	// },
+                	{
+		            	loader: 'cache-loader'
+		          	},
 		          	// {
 		           //  	loader: 'thread-loader'
 		          	// },
@@ -125,7 +125,7 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        port: 3037,
+        port: 3033,
         contentBase: './dist'
     },
     plugins: [

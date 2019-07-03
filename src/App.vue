@@ -17,7 +17,7 @@ export default {
 <style scoped lang="scss">
 .App {
 	display: flex;
-	// align-content: center;
-  	background: #aaaaaa;
+  align-content: center;
+	background: #aaaaaa;
 }
-</style>
+</style> 
